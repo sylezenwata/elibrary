@@ -1,0 +1,39 @@
+#addResourceModal.modal {
+    display: none;
+}
+button#refreshResource {
+    border-radius: 50%;
+    padding: 5px;
+}
+button#addResource {
+    padding: 5px;
+}
+button#refreshResource.spin {
+    animation: spinner .7s linear infinite;
+}
+button#refreshResource.icon,
+button#addResource.icon {
+    height: 35px;
+    width: 35px;
+}
+form#searchResource input.form-input {
+    width: 250px;
+}
+#resourceList tbody tr.r-item .status {
+    background-color: var(--error-color);
+    font-weight: 600;
+}
+#resourceList tbody tr.r-item.r-item__active .status {
+    background-color: var(--success-color);
+}
+#resourceList tbody tr.r-item.r-item__active button[data-status] svg.enable {
+    display: none;
+}
+#resourceList tbody tr.r-item.r-item__inactive button[data-status] svg.disable {
+    display: none;
+}
+@media (max-width: 320px) {
+    form#searchResource input.form-input {
+        width: 100%;
+    }
+}

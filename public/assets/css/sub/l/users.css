@@ -1,0 +1,32 @@
+button#refreshUsers {
+    border-radius: 50%;
+    padding: 5px;
+}
+button#refreshUsers.spin {
+    animation: spinner .7s linear infinite;
+}
+button#refreshUsers.icon {
+    height: 35px;
+    width: 35px;
+}
+form#searchUsers input.form-input {
+    width: 250px;
+}
+#usersList tbody tr.r-item .status {
+    background-color: var(--error-color);
+    font-weight: 600;
+}
+#usersList tbody tr.r-item.r-item__active .status {
+    background-color: var(--success-color);
+}
+#usersList tbody tr.r-item.r-item__active button[data-status] svg.enable {
+    display: none;
+}
+#usersList tbody tr.r-item.r-item__inactive button[data-status] svg.disable {
+    display: none;
+}
+@media (max-width: 320px) {
+    form#searchUsers input.form-input {
+        width: 100%;
+    }
+}

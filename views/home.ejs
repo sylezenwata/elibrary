@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Library Home - Reed E-LIbrary</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png">
+		<link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicons/favicon.ico">
+		<link rel="manifest" href="/assets/img/favicons/manifest.json">
+		<meta name="msapplication-TileImage" content="/assets/img/favicons/mstile-150x150.png">
+		<meta name="theme-color" content="#ffffff">
+        <link rel="stylesheet" href="/static/3543911e5bd2e640705d.css" />
+        <link rel="stylesheet" href="/static/c2b6911b1237efe2713f.css" />
+        <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"> -->
+		<noscript>
+			<div class="no-script">
+				<p>
+					You appear to be using an outdated browser, or javascript is
+					disabled in your browser. Please upgrade to a modern browser or
+					enable javascript and refresh page.
+				</p>
+			</div>
+		</noscript>
+	</head>
+	<body>
+		<section>
+			<div class="content">
+				<%- include('./partials/nav.ejs'); %>
+				<%- include('./partials/sidebar.ejs'); %>
+				<section id="main-con">
+                    <div class="main-con__wrap flex flex-col p-lr-10">
+                        <div class="main-con__head"></div>
+                        <div class="main-con__content position-r">
+							<div id="resourceSearch" class="box-hol flex align-c justify-e">
+								<div class="box b-rad-5 p-5" style="box-shadow: var(--btn-bx-s);">
+									<form id="searchResource" action="/l/resource/search" method="GET" class="flex align-c justify-c">
+										<input type="text" name="q" class="form-input" style="border: none; font-size: 14px; height: 30px;" placeholder="Search by ISBN, Title, or Author" autocomplete="off" required>
+										<button type="submit" class="btn primary icon stroke-light">
+											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+												<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+												<circle cx="10" cy="10" r="7" />
+												<line x1="21" y1="21" x2="15" y2="15" />
+											</svg>
+										</button>
+									</form>
+								</div>
+								<div class="m-l-10">
+									<button title="Refresh" id="refreshResource" class="btn secondary icon stroke-light">
+										<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+											<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+											<path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+											<path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+										</svg>
+									</button>
+								</div>
+							</div>
+							<div class="flex flex-col">
+								<div id="resourceContainer" class="flex flex-wrap p-tb-20"></div>
+							</div>
+                        </div>
+                    </div>
+                </section>
+			</div>
+			<div id="readModal" class="modal dark" data-read-mode="false">
+				<div class="modal-content b-rad-5 b-s-high">
+					<div class="modal-head flex justify-b">
+						<h1 id="readModalTitle" class="flex flex-col justify-c f-14"></h1>
+						<div class="flex align-c">
+							<button type="button" id="readMode" title="Toggle reading mode" class="btn primary icon stroke-light m-r-5" style="padding: 2px;">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+									<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+									<path d="M8 4h-2l-3 10" />
+									<path d="M16 4h2l3 10" />
+									<line x1="10" y1="16" x2="14" y2="16" />
+									<path d="M21 16.5a3.5 3.5 0 0 1 -7 0v-2.5h7v2.5" />
+									<path d="M10 16.5a3.5 3.5 0 0 1 -7 0v-2.5h7v2.5" />
+								</svg>
+							</button>
+							<button type="button" id="closeReadModal" class="icon stroke" title="Close" style="width: 25px; height: 25px; background-color: transparent; border: none">
+								<svg xmlns="http://www.w3.org/2000/svg" style="stroke-width: 2.0;" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+									<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+									<line x1="18" y1="6" x2="6" y2="18" />
+									<line x1="6" y1="6" x2="18" y2="18" />
+								</svg>
+							</button>
+						</div>
+					</div>
+					<div class="modal-body custom-scroll">
+						<div class="modal-body__content flex justify-c"></div>
+					</div>
+					<div class="modal-foot flex justify-e align-c">&nbsp;</div>
+				</div>
+			</div>
+		</section>
+		<script src="/static/6cbab6cc4b42141ee82d.js"></script>
+		<script src="/static/9278a5b6c8c617c1a30c.js"></script>
+	</body>
+</html>

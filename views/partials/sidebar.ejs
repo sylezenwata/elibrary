@@ -1,0 +1,103 @@
+<aside id="sideBar" class="custom-scroll">
+    <div class="sideBar__wrap flex flex-col justify-b">
+        <div>
+            <div class="nav-bar__side flex align-c justify-c">
+                <a href="/" class="flex align-c justify-c">
+                    <div class="logo">
+                        <img src="/assets/img/gallery/logo.png" alt="" />
+                    </div>
+                    <h1 class="text-color text-c m-l-10 f-20">Reed</h1>
+                </a>
+            </div>
+            <!-- <div class="p-tb-5 text-c f-w-6" style="color: #fff;">&nbsp;</div> -->
+            <ul class="sideBar__list">
+                <li class="list-item" data-active="<%=typeof path != 'undefined' && path === '/l/home' ? true : false%>">
+                    <a href="/l/home">
+                        <div class="flex align-c p-lr-20 p-tb-5">
+                            <span class="icon stroke m-r-5" role="img">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="44"
+                                    height="44"
+                                    view-box="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="#2c3e50"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path
+                                        stroke="none"
+                                        d="M0 0h24v24H0z"
+                                        fill="none"
+                                    ></path>
+                                    <polyline
+                                        points="5 12 3 12 12 3 21 12 19 12"
+                                    ></polyline>
+                                    <path
+                                        d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"
+                                    ></path>
+                                    <rect x="10" y="12" width="4" height="4"></rect>
+                                </svg>
+                            </span>
+                            <span class="position-r">Home</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="list-item" data-active="<%=typeof path != 'undefined' && path === '/l/setting' ? true : false%>">
+                    <a href="/l/setting">
+                        <div class="flex align-c p-lr-20 p-tb-5">
+                            <span class="icon stroke m-r-5" role="img">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </span>
+                            <span class="position-r">Setting</span>
+                        </div>
+                    </a>
+                </li>
+                <% if (userData.rank === 'admin') { %>
+                <div class="custom-hr"><span class="f-12 f-w-6 p-lr-10 position-a" style="top: 50%; background-color: var(--light-bg-color); color: var(--text-color); left: 50%; transform: translate(-50%, -50%);">Admin</span></div>
+                <li class="list-item" data-active="<%=typeof path != 'undefined' && path === '/l/users' ? true : false%>">
+                    <a href="/l/users">
+                        <div class="flex align-c p-lr-20 p-tb-5">
+                            <span class="icon stroke m-r-5" role="img">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                                </svg>
+                            </span>
+                            <span class="position-r">Users</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="list-item" data-active="<%=typeof path != 'undefined' && path === '/l/resource' ? true : false%>">
+                    <a href="/l/resource">
+                        <div class="flex align-c p-lr-20 p-tb-5">
+                            <span class="icon stroke m-r-5" role="img">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+                                    <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+                                    <line x1="3" y1="6" x2="3" y2="19" />
+                                    <line x1="12" y1="6" x2="12" y2="19" />
+                                    <line x1="21" y1="6" x2="21" y2="19" />
+                                </svg>
+                            </span>
+                            <span class="position-r">Resources</span>
+                        </div>
+                    </a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+        <div class="position-r m-t-20">
+            <p class="text-c f-10 f-w-6 p-10 text-mute">&nbsp;</p>
+        </div>
+    </div>
+</aside>
