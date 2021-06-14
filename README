@@ -1,12 +1,12 @@
 A quick guide to usage:
 
 1. Install modules
-   npm install
+   ==> npm install
 
 2. Run build
-   npm build
+   ==> npm build
 
 3. Start app
-   npm start 
+   ==> npm start 
    or 
-   npm dev (for development)
+   ==> npm dev (for development)
