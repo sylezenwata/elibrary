@@ -13,14 +13,14 @@ module.exports = {
 	mode: "production",
 	output: {
 		path: `${__dirname}/public/static`,
-		filename: "[contenthash].js",
+		filename: "[name].bundle.js",
 		environment: {
 			arrowFunction: false
 		}
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: '[contenthash].css',
+			filename: '[name].css',
 		})
 	],
 	module: {
@@ -46,9 +46,9 @@ module.exports = {
 		],
 	},
 	optimization: {
-		splitChunks: {
-			chunks: 'all',
-		},
+		// splitChunks: {
+		// 	chunks: 'all',
+		// },
 		minimize: true,
 		minimizer: [
 			// new TerserPlugin({
