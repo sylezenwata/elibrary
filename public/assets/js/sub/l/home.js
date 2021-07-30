@@ -64,7 +64,7 @@ const addToResourceList = (data) => {
     const {id,title,author,thumbnail} = data;
     let resourceItem = `<div class="r-item__wrap" data-ref="${id}">
         <div class="r-item" onclick="viewResource(event);">
-            <div class="r-item__img" style="background-image: url('/assets/uploads/resource/${thumbnail}'); background-position: top center; background-repeat: no-repeat;"></div>
+            <div class="r-item__img" style="background-image: url('/assets/uploads/resource/${thumbnail}'); background-size: contain; background-position: top center; background-repeat: no-repeat;"></div>
             <div class="r-item__info f-12 p-10 text-c">
                 <h1>${title}</h1>
                 <p class="m-t-5">

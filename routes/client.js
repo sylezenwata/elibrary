@@ -9,9 +9,9 @@ const { setLogin, logout, valAuth, formatUrl, rdr, valLoginActive, jsonRes, errH
 const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
-const pdfThumbnail = require("pdf-thumbnail");
 const multer = require("multer");
 
+// resource upload path
 const resourceUploadPath = path.join(__dirname, '..', '/public/assets/uploads/resource');
 
 /**
@@ -19,23 +19,16 @@ const resourceUploadPath = path.join(__dirname, '..', '/public/assets/uploads/re
  */
 const storage = multer.diskStorage({
     destination(req, file, cb) {
+        if (!(file.originalname.match(/\.(pdf)/) || file.originalname.match(/\.(jpeg|jpg|png)/))) {
+            return cb(new Error('Only pdf file, and jpeg or jpg or png thumbnail file type is valid.'));
+        }
         cb(null, `${resourceUploadPath}`);
     },
     filename(req, file, cb) {
-        cb(null,`${crypto.createHash('md5').update(`${Date.now()}`).digest('hex')}.pdf`);
+        cb(null,`${crypto.createHash('md5').update(`${Date.now()}`).digest('hex')}.${file.mimetype.split('/')[1]}`);
     },
 });
-const upload = multer({
-    // limits: {
-	// 	fileSize: 15000000, // max file size 15MB
-	// },
-    fileFilter(req, file, cb) {
-        if (!(file.originalname.match(/\.(pdf)/)))
-            return cb(new Error('Only pdf file type is valid.'));
-        cb(undefined, true);
-    },
-    storage,
-}).single('pdf_file');
+const upload = multer({storage});
 
 /**
  * landing page route
@@ -135,56 +128,47 @@ Route.get('/l/resource', valAuth, valUserCallBack, async (req, res) => {
 /**
  * libary resource uploda
  */
-Route.post('/l/resource/new', valAuth, valUserCallBack, async (req, res) => {
+Route.post('/l/resource/new', valAuth, valUserCallBack, upload.any(), async (req, res) => {
     try {
-        upload(req, res, async (uploadError) => {
-            try {
-                if (!req.file) {
-                    throw new Error('No pdf file was selected.');
-                }
-                if ((uploadError instanceof multer.MulterError) || req.fileValidationError || uploadError) {
-                    throw new Error('Resource upload failed, try again.');
-                }
-                // thumbnail
-                let pdf_file = req.file.path;
-                let thumbnail = `${pdf_file.substr(0,pdf_file.lastIndexOf('.'))}.jpeg`;
-                await pdfThumbnail(fs.readFileSync(`${pdf_file}`),{resize: {height: 200,width: 200}})
-                    .then(
-                        data => data.pipe(fs.createWriteStream(thumbnail))
-                    )
-                    .catch(err => {
-                        fs.unlink(`${pdf_file}`, e => {});
-                        throw err;
-                    });
-                // validate ISBN & add to db
-                const {ISBN = null,author = null,title = null,publisher = null,category = null,desc = null} = req.body;
-                if (!ISBN || !author || !title || !publisher) {
-                    fs.unlink(`${pdf_file}`, e => {});
-                    fs.unlink(`${thumbnail}`, e => {});
-                    throw new Error(`Enter all required fileds.`);
-                }
-                if (await BooksModel.validBook({ISBN})) {
-                    fs.unlink(`${pdf_file}`, e => {});
-                    fs.unlink(`${thumbnail}`, e => {});
-                    throw new Error(`ISBN '${ISBN}' already exists.`);
-                }
-                // insert into db
-                await BooksModel.addBook({
-                    ISBN, 
-                    title, 
-                    author, 
-                    publisher, 
-                    category, 
-                    desc, 
-                    thumbnail: `${req.file.filename.substr(0,req.file.filename.lastIndexOf('.'))}.jpeg`, 
-                    pdf_file: req.file.filename,
-                })
-                res.json(jsonRes({data: 'Resource upload was successful.'}));
-            } catch (error) {
-                let errMsg = errHandler(error,'Resource upload failed, try again.');
-                res.json(jsonRes({error: true, errorMsg: errMsg}));
-            }
-        });
+        if (!req.files || req.files.length <= 0) {
+            throw new Error('Pdf and thumbnail(image) files are required.');
+        }
+        if (!req.files[0].fieldname === 'pdf_file') {
+            throw new Error('No pdf file selected.');
+        }
+        if (!req.files[1].fieldname === 'thumb_file') {
+            throw new Error('No thumbnail(image) file selected.');
+        }
+        if (req.fileValidationError) {
+            throw new Error(req.fileValidationError);
+        }
+        // thumbnail
+        let pdf_file = req.files[0];
+        let thumbnail = req.files[1];
+        // validate ISBN & add to db
+        const {ISBN = null,author = null,title = null,publisher = null,category = null,desc = null} = req.body;
+        if (!ISBN || !author || !title || !publisher) {
+            fs.unlink(`${pdf_file.path}`, e => {});
+            fs.unlink(`${thumbnail.path}`, e => {});
+            throw new Error(`Enter all required fileds.`);
+        }
+        if (await BooksModel.validBook({ISBN})) {
+            fs.unlink(`${pdf_file.path}`, e => {});
+            fs.unlink(`${thumbnail.path}`, e => {});
+            throw new Error(`ISBN '${ISBN}' already exists.`);
+        }
+        // insert into db
+        await BooksModel.addBook({
+            ISBN, 
+            title, 
+            author, 
+            publisher, 
+            category, 
+            desc, 
+            thumbnail: thumbnail.filename, 
+            pdf_file: pdf_file.filename,
+        })
+        res.json(jsonRes({data: 'Resource upload was successful.'}));
     } catch (error) {
         let errMsg = errHandler(error,'Resource upload failed, try again.');
         res.json(jsonRes({error: true, errorMsg: errMsg}));
